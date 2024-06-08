@@ -24,10 +24,10 @@ class decryption:
     
 
 class tool:
-    choice = input("Do you want to encrypt or decrypt? ")
-    if choice == "encrypt":
+    choice = input("Do you want to encrypt or decrypt? (E/D): ")
+    if choice == "E":
         encryption()
-    elif choice == "decrypt":
+    elif choice == "D":
         decryption()
     else:
         print("Invalid choice.")
