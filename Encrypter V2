@@ -1,0 +1,34 @@
+from base64 import encode
+from cryptography.fernet import Fernet
+import PySimpleGUI as sg
+import pyperclip, os
+
+key = Fernet.generate_key()
+random_name = f'key-{os.urandom(6).hex()}'
+layout = [
+    [sg.Text("Enter the text you want to encrypt:")],
+    [sg.InputText(key='input_text')],
+    [sg.Button('Encrypt'), sg.Button('Save'), sg.Button('Exit')]
+]
+
+mainwindow = sg.Window('Nex Encryption', size=(600, 100), layout=layout)
+
+while True:
+    event, values = mainwindow.read()
+    if event == sg.WIN_CLOSED or event == 'Exit':
+        break
+    elif event == 'Encrypt':
+        input_text = values['input_text']
+        input_text = input_text.encode()
+        f = Fernet(key)
+        encrypted_text = f.encrypt(input_text)
+        d_key = key.decode()
+        d_text = encrypted_text.decode()
+        sg.popup_scrolled(f'Encrypted text: {d_text}\n\nKey: {d_key}', grab_anywhere=True, size=(125, 10))
+    elif event == 'Save':
+        if d_text and d_key:
+            with open(random_name, 'w') as file:
+                file.write(f'Encrypted text: {d_text}\nKey: {d_key}')
+            sg.popup('Data saved to encrypted_data.txt')
+        else:
+            sg.popup('Nothing to save. Please encrypt some text first.')
