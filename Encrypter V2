@@ -1,10 +1,10 @@
 from base64 import encode
 from cryptography.fernet import Fernet
 import PySimpleGUI as sg
-import pyperclip, os
+import os
 
 key = Fernet.generate_key()
-random_name = f'key-{os.urandom(6).hex()}'
+random_name = f'key-{os.urandom(1).hex()}'
 layout = [
     [sg.Text("Enter the text you want to encrypt:")],
     [sg.InputText(key='input_text')],
@@ -29,6 +29,6 @@ while True:
         if d_text and d_key:
             with open(random_name, 'w') as file:
                 file.write(f'Encrypted text: {d_text}\nKey: {d_key}')
-            sg.popup('Data saved to encrypted_data.txt')
+            sg.popup(f'File saved as {random_name}')
         else:
             sg.popup('Nothing to save. Please encrypt some text first.')
