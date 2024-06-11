@@ -1,0 +1,23 @@
+from base64 import encode
+from cryptography.fernet import Fernet
+import PySimpleGUI as sg
+
+layout =   [[sg.Text('Enter the KEY:'), sg.InputText(key='key')],
+           [sg.Text('Enter the encrypted TEXT:'), sg.InputText(key='encrypted_text')],
+           [sg.Button('Decrypt'), sg.Button('Exit')]] 
+
+window = sg.Window('Nex decryption', layout, size=(600, 100))
+
+while True:
+    event, values = window.read()
+    if event in (sg.WIN_CLOSED, 'Exit'):
+        break
+    if event == 'Decrypt':
+        key = values['key']
+        key = key.encode()
+        f = Fernet(key)
+        encrypted_text = values['encrypted_text']
+        encrypted_text = encrypted_text.encode()
+        decrypted_text = f.decrypt(encrypted_text)
+        sg.Window.close(window)
+        sg.popup('Decrypted text:', decrypted_text.decode(),grab_anywhere=True)
